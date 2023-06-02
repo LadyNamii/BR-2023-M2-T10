@@ -1,6 +1,6 @@
 import pygame 
 
-from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS
+from dino_runner.utils.constants import BG, ICON, SCREEN_HEIGHT, SCREEN_WIDTH, TITLE, FPS, DEFAULT_TYPE
 from dino_runner.components.dinosaur import Dinosaur 
 from dino_runner.components.obstacles.obstacle_manager import ObstacleManager 
 from dino_runner.utils.text_utils import draw_text
@@ -86,6 +86,22 @@ class Game:
             pos_y_center=50
         )
     
+    def draw_power_up_time(self):
+        if self.player.has_power_up:
+            time_to_show = round((self.player.power_up_time - pygame.time.get_ticks()) / 1000, 2)
+            if time_to_show >= 0:
+                draw_text(
+                    f"{self.player.type.capitalize()} enable for {time_to_show} seconds",
+                    self.screen,
+                    font_size = 18,
+                    pos_x_center = 500,
+                    pos_y_center = 40  
+                )
+            else:
+                self.player.has_power_up = False
+                self.player.type = DEFAULT_TYPE
+
+
     def handle_events_on_menu(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
